@@ -2,14 +2,12 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Installation des dépendances système nécessaires
+# Installation des dépendances système pour Dockerode
 RUN apk add --no-cache \
+    docker \
     python3 \
     make \
-    g++ \
-    wget \
-    unzip \
-    curl
+    g++
 
 # Copier les fichiers package
 COPY package*.json ./
@@ -29,7 +27,7 @@ RUN chown -R nextjs:nodejs /app
 USER nextjs
 
 # Exposer le port
-EXPOSE 5000
+EXPOSE 10000
 
 # Commande de démarrage
 CMD ["npm", "start"]
