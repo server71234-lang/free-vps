@@ -1,0 +1,46 @@
+services:
+  # Backend API
+  - type: web
+    name: api-inconnu-vps
+    env: node
+    plan: free
+    region: frankfurt
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        fromDatabase:
+          name: inconnu-vps-db
+          property: connectionString
+      - key: GITHUB_CLIENT_ID
+        value: votre_client_id_github
+      - key: GITHUB_CLIENT_SECRET
+        value: votre_client_secret_github
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://inconnu-vps.onrender.com
+
+  # Frontend
+  - type: web
+    name: inconnu-vps
+    env: node
+    plan: free
+    region: frankfurt
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NEXT_PUBLIC_BACKEND_URL
+        value: https://api-inconnu-vps.onrender.com
+      - key: NEXT_PUBLIC_FRONTEND_URL
+        value: https://inconnu-vps.onrender.com
+
+# Database (optionnel - si vous voulez utiliser Render PostgreSQL)
+databases:
+  - name: inconnu-vps-db
+    plan: free
+    region: frankfurt
