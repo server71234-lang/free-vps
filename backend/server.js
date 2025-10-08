@@ -108,6 +108,29 @@ mongoose.connection.on('error', (err) => {
   console.error('❌ Erreur MongoDB:', err);
 });
 
+// ✅ AJOUT: Route racine - DOIT ÊTRE AVANT LES AUTRES ROUTES
+app.get('/', (req, res) => {
+  res.json({
+    message: '🚀 INCONNU VPS Backend API',
+    version: '1.0.0',
+    status: 'online',
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      health: '/health',
+      api: '/api',
+      auth: {
+        github: '/auth/github',
+        user: '/auth/user',
+        logout: '/auth/logout'
+      },
+      servers: '/api/servers',
+      user: '/api/user',
+      referral: '/api/referral'
+    },
+    documentation: 'Voir /api pour plus de détails'
+  });
+});
+
 // Routes
 app.use('/auth', authRoutes);
 app.use('/api/servers', serverRoutes);
